@@ -1,0 +1,45 @@
+{
+  "name": "shop_backend",
+  "version": "1.0.0",
+  "description": "my first advance shop backend.",
+  "main": "./src/server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/server.js",
+    "dev": "dotenv -e .env nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sirUnchained/advance_shop.git"
+  },
+  "author": "sirUnchained",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.10.1",
+    "@types/request": "^2.48.12",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv-cli": "^7.4.4",
+    "express": "^4.21.1",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.3",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^5.0.9",
+    "nodemon": "^3.1.7",
+    "request": "^2.88.2",
+    "svg-captcha": "^1.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "uuid": "^11.0.3",
+    "yup": "^1.4.0"
+  }
+}
