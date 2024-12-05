@@ -9,16 +9,17 @@ function multerStorage(src: string, isProduct: boolean = false) {
 
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      if (isProduct) {
-        const user = req.user;
-        const newSrc = path.join(src, user.username);
-        if (fs.existsSync(newSrc)) {
-          fs.mkdirSync(newSrc, { recursive: true });
-        }
-        cb(null, newSrc);
-      } else {
-        cb(null, src);
-      }
+      // if (isProduct) {
+      //   const user = req.user;
+      //   const newSrc = path.join(src, user.username);
+      //   if (fs.existsSync(newSrc)) {
+      //     fs.mkdirSync(newSrc, { recursive: true });
+      //   }
+      //   cb(null, newSrc);
+      // } else {
+      //   cb(null, src);
+      // }
+      cb(null, src);
     },
     filename: function (req, file, cb) {
       const oldName = file.originalname.split(".");

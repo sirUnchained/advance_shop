@@ -4,6 +4,7 @@ import { errorRes, successRes } from "../../utils/sendRes";
 import { isValidObjectId } from "mongoose";
 import BannedModel from "../../models/Ban.model";
 import SellerModel from "../../models/Seller.model";
+import ProductModel from "../../models/Product.model";
 
 export const edit = async (
   req: Request,
@@ -62,7 +63,8 @@ export const ban = async (
     // if user was seller all of his shops get removed
     if (removesdUser.roles.includes("seller")) {
       await SellerModel.deleteMany({ user: removesdUser._id });
-      // todo remove seller products
+      await SellerModel.deleteOne({ user: removesdUser._id });
+      await ProductModel.deleteMany({ "sellers.seller": removesdUser._id });
     }
 
     await BannedModel.create({

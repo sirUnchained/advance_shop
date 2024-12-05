@@ -9,6 +9,7 @@ import {
 import cities from "./../../cities/cities.json";
 import { isValidObjectId } from "mongoose";
 import UserModel from "../../models/User.model";
+import ProductModel from "../../models/Product.model";
 
 export const create = async (
   req: Request,
@@ -106,7 +107,7 @@ export const remove = async (
       return;
     }
 
-    // todo remove seller products
+    await ProductModel.deleteMany({ "sellers.seller": seller.user });
 
     await UserModel.updateOne(
       {
