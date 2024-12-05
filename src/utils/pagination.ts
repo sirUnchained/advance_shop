@@ -1,10 +1,4 @@
-function pagination(
-  docCount: number,
-  items: any,
-  // itemsName: string,
-  page: number,
-  limit: number
-) {
+function pagination(docCount: number, items: any, page: number, limit: number) {
   return { count: docCount, items, page, limit };
 }
 

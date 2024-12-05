@@ -41,7 +41,7 @@ const createProductValidator = yup.object().shape({
         .number()
         .required("Price is required")
         .positive("Price must be a positive number"),
-      stock: yup
+      count: yup
         .number()
         .required("Stock is required")
         .min(0, "Stock must be a non-negative number"),
@@ -101,7 +101,7 @@ const updateProductValidator = yup.object().shape({
         .number()
         .required("Price is required")
         .positive("Price must be a positive number"),
-      stock: yup
+      count: yup
         .number()
         .required("Stock is required")
         .min(0, "Stock must be a non-negative number"),

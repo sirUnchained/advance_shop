@@ -19,12 +19,14 @@ import categoryRoutes from "./modules/category/category.routes";
 import userRouter from "./modules/user/user.routes";
 import sellerRouter from "./modules/seller/seller.routes";
 import productRouter from "./modules/product/product.routes";
+import sellerRequestRouter from "./modules/sellerRequest/sellerRequest.routes";
 
 app.use("/auth", authRoutes);
 app.use("/category", categoryRoutes);
 app.use("/user", userRouter);
 app.use("/seller", sellerRouter);
 app.use("/product", productRouter);
+app.use("/seller-Request", sellerRequestRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   try {

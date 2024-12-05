@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { string } from "yup";
 
 const sellerSchema = new Schema(
   {
