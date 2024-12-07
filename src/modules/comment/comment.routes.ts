@@ -13,11 +13,13 @@ import {
 import authorization from "../../middleWares/auth.middleWare";
 import roleGuard from "../../middleWares/roleGuard.middleWare";
 
-commentRouter.route("/").get(authorization, roleGuard(["admin"]), getAll);
+commentRouter
+  .route("/")
+  .get(authorization, roleGuard(["admin"]), getAll)
+  .post(authorization, create);
 
 commentRouter
   .route("/:id")
-  .post(authorization, create)
   .put(authorization, edit)
   .delete(authorization, roleGuard(["admin"]), remove);
 

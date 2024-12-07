@@ -3,8 +3,10 @@ import CommentModel from "../../models/Comment.model";
 import { errorRes, successRes } from "../../utils/sendRes";
 import pagination from "../../utils/pagination";
 import {
+  addReplyValidator,
   createCommentValidator,
   updateCommentValidator,
+  updateReplyValidator,
 } from "./comment.validator";
 import { isValidObjectId } from "mongoose";
 
@@ -69,6 +71,29 @@ export const edit = async (
 ): Promise<void> => {
   try {
     await updateCommentValidator.validate(req.body, { abortEarly: false });
+
+    const { content, rating } = req.body;
+    const { id } = req.params;
+    if (!isValidObjectId(id)) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    const comment = await CommentModel.findById(id);
+    if (!comment) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    } else if (comment.user.toString() !== req.user._id.toString()) {
+      errorRes(res, { message: "you cant edit anotehr user comment." }, 200);
+      return;
+    }
+
+    comment.content = content;
+    comment.rating = rating;
+    await comment.save();
+
+    successRes(res, { comment }, 200);
+    return;
   } catch (error) {
     next(error);
   }
@@ -80,7 +105,20 @@ export const remove = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // todo
+    const { id } = req.params;
+    if (!isValidObjectId(id)) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    const comment = await CommentModel.findByIdAndDelete(id);
+    if (!comment) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    successRes(res, { comment }, 200);
+    return;
   } catch (error) {
     next(error);
   }
@@ -92,7 +130,37 @@ export const reply = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // todo
+    await addReplyValidator.validate(req.body, { abortEarly: false });
+
+    const { content } = req.body;
+    const user = req.user;
+    const { id } = req.params;
+    if (!isValidObjectId(id)) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    const comment = await CommentModel.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          replies: {
+            user: user._id,
+            content,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    if (!comment) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    successRes(res, { message: "reply added." }, 201);
+    return;
   } catch (error) {
     next(error);
   }
@@ -104,7 +172,39 @@ export const removeReply = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // todo
+    const { commentID, replyID } = req.params;
+    if (!isValidObjectId(commentID) || !isValidObjectId(replyID)) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    // const comment = await CommentModel.findOneAndUpdate(
+    //   {
+    //     _id: commentID,
+    //   },
+    //   {
+    //     $pull: {
+    //       replies: {
+    //         _id: replyID,
+    //       },
+    //     },
+    //   },
+    //   {
+    //     new: true,
+    //   }
+    // );
+
+    const comment = await CommentModel.findById(commentID);
+    if (!comment) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    comment.replies.pull(replyID);
+    await comment.save();
+
+    successRes(res, { message: "removed." }, 200);
+    return;
   } catch (error) {
     next(error);
   }
@@ -116,7 +216,31 @@ export const updateReply = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // todo
+    await updateReplyValidator.validate(req.body, { abortEarly: false });
+
+    const { content } = req.body;
+    const { commentID, replyID } = req.params;
+    if (!isValidObjectId(commentID) || !isValidObjectId(replyID)) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    const comment = await CommentModel.findById(commentID);
+    if (!comment) {
+      errorRes(res, { message: "comment not found" }, 404);
+      return;
+    }
+
+    comment.replies.find((reply) => {
+      if (reply._id.toString() === replyID.toString()) {
+        reply.content = content;
+        return;
+      }
+    });
+    await comment.save();
+
+    successRes(res, { message: "reply updated." }, 200);
+    return;
   } catch (error) {
     next(error);
   }
