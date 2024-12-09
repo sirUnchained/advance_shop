@@ -60,12 +60,6 @@ export const ban = async (
       errorRes(res, { message: "user not found." }, 404);
       return;
     }
-    // if user was seller all of his shops get removed
-    if (removesdUser.roles.includes("seller")) {
-      await SellerModel.deleteMany({ user: removesdUser._id });
-      await SellerModel.deleteOne({ user: removesdUser._id });
-      await ProductModel.deleteMany({ "sellers.seller": removesdUser._id });
-    }
 
     await BannedModel.create({
       phone: removesdUser.phone,

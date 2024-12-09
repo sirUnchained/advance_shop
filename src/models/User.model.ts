@@ -1,4 +1,6 @@
 import { Schema, model } from "mongoose";
+import SellerModel from "./Seller.model";
+import ProductModel from "./Product.model";
 
 const addressSchema: Schema = new Schema(
   {
@@ -64,6 +66,21 @@ const UserSchema: Schema = new Schema(
     timestamps: true,
   }
 );
+
+UserSchema.pre("deleteOne", async function (next) {
+  try {
+    const user = this.getQuery();
+
+    if (user.roles.includes("seller")) {
+      await SellerModel.deleteMany({ user: user._id });
+      await ProductModel.deleteMany({ "sellers.seller": user._id });
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 const UserModel = model("users", UserSchema);
 

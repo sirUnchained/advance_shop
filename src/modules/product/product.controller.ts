@@ -9,6 +9,7 @@ import {
 import { v4 } from "uuid";
 import SubCategoryModel from "../../models/SubCategory.model";
 import pagination from "../../utils/pagination";
+import NoteModel from "../../models/Note.model";
 
 const supportedFormats = [
   "image/svg",
