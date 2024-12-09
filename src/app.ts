@@ -23,6 +23,8 @@ import sellerRequestRouter from "./modules/sellerRequest/sellerRequest.routes";
 import commentRouter from "./modules/comment/comment.routes";
 import locationRouter from "./modules/location/location.routes";
 import shortLinkRouter from "./modules/shortLink/shortLink.routes";
+import orderRouter from "./modules/order/order.routes";
+import noteRouter from "./modules/note/note.routes";
 
 app.use("/auth", authRoutes);
 app.use("/category", categoryRoutes);
@@ -33,6 +35,8 @@ app.use("/seller-Request", sellerRequestRouter);
 app.use("/comment", commentRouter);
 app.use("/location", locationRouter);
 app.use("/shortLink", shortLinkRouter);
+app.use("/order", orderRouter);
+app.use("/note", noteRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   try {
