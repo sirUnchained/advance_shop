@@ -25,6 +25,7 @@ import locationRouter from "./modules/location/location.routes";
 import shortLinkRouter from "./modules/shortLink/shortLink.routes";
 import orderRouter from "./modules/order/order.routes";
 import noteRouter from "./modules/note/note.routes";
+import cartRouter from "./modules/Cart/cart.routes";
 
 app.use("/auth", authRoutes);
 app.use("/category", categoryRoutes);
@@ -37,6 +38,7 @@ app.use("/location", locationRouter);
 app.use("/shortLink", shortLinkRouter);
 app.use("/order", orderRouter);
 app.use("/note", noteRouter);
+app.use("/cart", cartRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   try {
